@@ -1,0 +1,42 @@
+import express, { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import knex from 'knex';
+
+// Create a Knex instance with your database configuration
+const db = knex({
+  client: 'mysql', // Adjust according to your database type
+  connection: {
+    host: 'your-db-host',
+    user: 'your-db-user',
+    password: 'your-db-password',
+    database: 'your-db-name'
+  }
+});
+
+// Create the file table schema using migrations
+async function migrateLatest() {
+  await db.migrate.latest();
+}
+
+// Create Express app
+const app = express();
+const port = 3000; // Set your desired port
+
+// API endpoint to generate a UUID and return the pre-signed URL for uploading
+app.get('/generate-upload-url', async (req: Request, res: Response) => {
+
+});
+
+// Start the Express server and migrate the latest changes to the database
+app.listen(port, async () => {
+  console.log(`Server is running on port ${port}`);
+
+  try {
+    // Migrate latest changes to the database
+    await migrateLatest();
+    console.log('Database migration completed successfully.');
+  } catch (error) {
+    console.error('An error occurred during database migration:', error);
+    process.exit(1); // Exit the process with a non-zero status code
+  }
+});
