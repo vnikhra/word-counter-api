@@ -12,6 +12,7 @@ export const s3 = new AWS.S3({
   secretAccessKey: process.env.S3_SECRET_KEY,
   s3ForcePathStyle: true, // Needed for MinIO
   signatureVersion: "v4", // Needed for MinIO
+  region: "us-east-1",
 });
 
 const uploadBucketName =

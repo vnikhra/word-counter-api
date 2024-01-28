@@ -1,4 +1,3 @@
-import { NotFound } from "@aws-sdk/client-s3";
 // Check if bucket exists
 export async function bucketExists(
   s3: AWS.S3,
@@ -8,10 +7,7 @@ export async function bucketExists(
     await s3.headBucket({ Bucket: bucketName }).promise();
     return true;
   } catch (err) {
-    if (err instanceof NotFound) {
-      return false;
-    }
-    throw err;
+    return false;
   }
 }
 
@@ -105,7 +101,7 @@ export async function getPublicUploadURL(
     const params = {
       Bucket: bucketName,
       Key: objectKey,
-      Expires: 600,
+      Expires: 90,
     };
     return s3.getSignedUrl("putObject", params);
   } catch (err) {
@@ -123,7 +119,7 @@ export async function getPublicDownloadURL(
     const params = {
       Bucket: bucketName,
       Key: objectKey,
-      Expires: 600,
+      Expires: 90,
     };
     return s3.getSignedUrl("getObject", params);
   } catch (err) {
