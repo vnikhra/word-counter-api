@@ -22,11 +22,9 @@ const downloadBucketName =
 
 export async function config() {
   try {
-    // Create public bucket for downloads
     await createBucketIfNotExists(s3, uploadBucketName);
     await setPublicReadPolicy(s3, uploadBucketName);
 
-    // Create private bucket for uploads
     await createBucketIfNotExists(s3, downloadBucketName);
     await setPrivateWritePolicy(s3, downloadBucketName);
 

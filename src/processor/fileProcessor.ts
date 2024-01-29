@@ -1,9 +1,10 @@
 import { v4 as uuidV4 } from "uuid";
-import db from "../config/dbConfig";
+import getPostgresConnection from "../config/dbConfig";
 import { pushForProcessing } from "./queueProcessor";
 
 export async function createFileMeta() {
   const fileId = uuidV4();
+  const db = await getPostgresConnection();
   await db("files").insert({
     id: fileId,
   });
@@ -11,6 +12,7 @@ export async function createFileMeta() {
 }
 
 export async function isFileProcessingComplete(fileId: string) {
+  const db = await getPostgresConnection();
   const file = await db("files").select("status").where("id", fileId).first();
   if (!file) {
     return null;
@@ -19,6 +21,7 @@ export async function isFileProcessingComplete(fileId: string) {
 }
 
 export async function initFileProcessing(fileId: string) {
+  const db = await getPostgresConnection();
   await db("files").where({ id: fileId }).update({ status: "initiated" });
   await pushForProcessing(fileId);
 }

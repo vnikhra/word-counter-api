@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   const tableExists = await knex.schema.hasTable("files");
   if (!tableExists) {
     await knex.schema.createTable("files", (table) => {
-      table.uuid("id").primary(); // File ID (UUID)
+      table.uuid("id").primary();
       table
         .enum("status", [
           "requested",
@@ -14,9 +14,9 @@ export async function up(knex: Knex): Promise<void> {
           "error",
         ])
         .notNullable()
-        .defaultTo("requested"); // Processing status
-      table.dateTime("created_at").defaultTo(knex.fn.now()); // Created on time (automatic)
-      table.dateTime("updated_at").defaultTo(knex.fn.now()); // Updated on time (automatic)
+        .defaultTo("requested");
+      table.dateTime("created_at").defaultTo(knex.fn.now());
+      table.dateTime("updated_at").defaultTo(knex.fn.now());
     });
   }
 }

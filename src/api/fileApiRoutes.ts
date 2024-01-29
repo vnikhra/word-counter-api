@@ -14,7 +14,6 @@ router.get("/request-upload-url", async (req, res) => {
   try {
     const fileId = await createFileMeta();
     const uploadURL = await generateUploadUrl(fileId);
-    // Return the generated UUID and the pre-signed URL for uploading in the response
     res.json({ fileId, uploadURL });
   } catch (error) {
     console.error("An error occurred:", error);
@@ -24,13 +23,11 @@ router.get("/request-upload-url", async (req, res) => {
 
 router.get("/enqueue-file", async (req, res) => {
   try {
-    // Get the file ID from the query parameter
     const fileId = req.query.fileId as string;
     if (!fileId) {
       return res.status(400).json({ error: "File ID is required" });
     }
     await initFileProcessing(fileId);
-    // Return success response
     res.json({ message: "File enqueued for processing" });
   } catch (error) {
     console.error("An error occurred:", error);

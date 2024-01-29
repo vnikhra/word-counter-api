@@ -1,4 +1,3 @@
-// Check if bucket exists
 export async function bucketExists(
   s3: AWS.S3,
   bucketName: string,
@@ -11,7 +10,6 @@ export async function bucketExists(
   }
 }
 
-// Create S3 bucket if it doesn't exist
 export async function createBucketIfNotExists(
   s3: AWS.S3,
   bucketName: string,
@@ -30,7 +28,6 @@ export async function createBucketIfNotExists(
   }
 }
 
-// Set bucket policy to allow public read access
 export async function setPublicReadPolicy(
   s3: AWS.S3,
   bucketName: string,
@@ -45,6 +42,11 @@ export async function setPublicReadPolicy(
           Principal: "*",
           Action: "s3:GetObject",
           Resource: `arn:aws:s3:::${bucketName}/*`,
+          Condition: {
+            "StringEquals": {
+              "aws:Referer": "*"
+            }
+          }
         },
       ],
     };
@@ -60,7 +62,6 @@ export async function setPublicReadPolicy(
   }
 }
 
-// Set bucket policy to allow private write access
 export async function setPrivateWritePolicy(
   s3: AWS.S3,
   bucketName: string,
@@ -77,6 +78,11 @@ export async function setPrivateWritePolicy(
           },
           Action: "s3:PutObject",
           Resource: `arn:aws:s3:::${bucketName}/*`,
+          Condition: {
+            "StringEquals": {
+              "aws:Referer": "*"
+            }
+          }
         },
       ],
     };

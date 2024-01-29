@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import db from "./config/dbConfig";
+import getPostgresConnection from "./config/dbConfig";
 import * as s3Config from "./config/s3Config";
 import amqConfig from "./config/amqConfig";
 import express from "express";
@@ -9,6 +9,7 @@ import express from "express";
 import fileAPIRoutes from "./api/fileApiRoutes";
 
 async function setup() {
+  const db = await getPostgresConnection();
   await db.migrate.latest();
   await s3Config.config();
   await amqConfig();
